@@ -12,7 +12,9 @@ News Aggregator analytics offers a few key features:
 
 Here's how you track your website with News Aggregator:
 
-Check out .gitignore 
+1. Rename `example.env` to `.env` file in the root directory
+2. Insert `API_KEY = <API_KEY>`. Replace `<API_KEY>` with the actual API key.
+3. Install load_dotenv python package and run in Python notebook file.
 
 ## Usage
 
@@ -20,15 +22,9 @@ TODO: Write usage instructions
 
 ## Contributing
 
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
-
 ## History
 
-Version 0.1 (2015-05-23) - adding Devise and core Rails functionality
+Version 0.1 (2026-04-23) - Initial project setup
 
 ## Credits
 
