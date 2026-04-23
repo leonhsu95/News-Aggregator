@@ -1,16 +1,8 @@
 # News Aggregator
 
-News Aggregator is an analytics app for web projects. It helps you track events on your websites. It is built using Rails, Devise, and a few charting libraries.
-
-News Aggregator analytics offers a few key features:  
-
-- A client-side JavaScript snippet that allows a user to track events on their website  
-- A server-side API that captures and saves those events to a database  
-- A Rails application that displays the captured event data for a user
+News Aggregator is a news GUI Python app.
 
 ## Installation
-
-Here's how you track your website with News Aggregator:
 
 1. Rename `example.env` to `.env` file in the root directory
 2. Insert `API_KEY = <API_KEY>`. Replace `<API_KEY>` with the actual API key.
