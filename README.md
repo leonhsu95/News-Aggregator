@@ -22,10 +22,13 @@ Version 0.1 (2026-04-23) - Initial project setup
 
 **University of Technology Sydney - PYTHON_IN_PROGRESS**
 
-Leon Hsu - 26324145
-Ishani Bondade - 26147280
-Chaemin Jin - 26492722
-Niki Miyake - 14742605
+- Leon Hsu - 26324145
+
+- Ishani Bondade - 26147280
+
+- Chaemin Jin - 26492722
+
+- Niki Miyake - 14742605
 
 ## License
 
