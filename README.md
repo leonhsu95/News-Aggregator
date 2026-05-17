@@ -1,21 +1,54 @@
 # News Aggregator
 
-News Aggregator is a news GUI Python app.
+News Aggregator is a news GUI Python app that fetches articles from NewsAPI and New York Times API.
+
+## Project Structure
+
+The project follows a clean separation of concerns pattern:
+
+```
+news-aggregator/
+├── src/
+│   ├── __init__.py          # Package marker
+│   ├── main.py              # Application entry point
+│   ├── config.py            # Configuration & API keys
+│   ├── api.py               # News fetching & scraping logic
+│   └── ui.py                # Tkinter GUI components
+│
+├── requirements.txt         # Python dependencies
+├── run.py                  # Application entry point
+└── README.md               # This file
+```
 
 ## Installation
 
-1. Rename `example.env` to `.env` file in the root directory
-2. Insert `API_KEY = <API_KEY>`. Replace `<API_KEY>` with the actual API key.
-3. Install load_dotenv python package and run in Python notebook file.
+1. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
 
-## Usage
+2. Rename `example.env` to `.env` in the root directory and add your API keys:
+```
+NEWS_API_KEY=<your_newsapi_key>
+NYT_API_KEY=<your_nyt_api_key>
+```
 
-TODO: Write usage instructions
+## Running the Application
+
+```bash
+python -m src.main
+```
+
+Or from the src directory:
+```bash
+python main.py
+```
 
 ## Contributing
 
 ## History
 
+Version 0.2 (2026-05-17) - Refactored to separation of concerns architecture
 Version 0.1 (2026-04-23) - Initial project setup
 
 ## Credits
