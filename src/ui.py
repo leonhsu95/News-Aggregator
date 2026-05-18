@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import webbrowser
 from .config import ALL_CATEGORIES
-
+from .visualizer import NewsVisualizer
 
 class NewsApp:
     """Tkinter GUI for the News Aggregator."""
@@ -184,3 +184,21 @@ class NewsApp:
         
         text.insert("1.0", full_content)
         text.config(state="disabled")
+
+
+
+    def show_visualization(self):
+            """Display data visualizations."""
+    
+            if not self.current_article:
+                messagebox.showwarning(
+                    "No Data",
+                    "Please search for news articles first."
+                )
+                return
+    
+            visualizer = NewsVisualizer(self.current_article)
+    
+            visualizer.plot_articles_by_source()
+            visualizer.plot_summary_length_by_source()
+            visualizer.plot_top_words()
