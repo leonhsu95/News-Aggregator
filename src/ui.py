@@ -56,6 +56,15 @@ class NewsApp:
             font=("Times New Roman", 14, "bold")
         ).pack(pady=10)
 
+        tk.Button(
+            self.root,
+            text="Show Visualization",
+            command=self.show_visualization,
+            bg="green",
+            fg="white",
+            font=("Times New Roman", 14, "bold")
+        ).pack(pady=5)
+
         # Display frame with scrollbar
         self.display_frame = tk.Frame(self.root)
         self.display_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
