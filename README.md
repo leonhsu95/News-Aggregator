@@ -15,6 +15,11 @@ news-aggregator/
 │   ├── api.py               # News fetching & scraping logic
 │   └── ui.py                # Tkinter GUI components
 │
+├── tests/
+│   ├── test_api.py          # API module tests
+│   ├── test_config.py       # Config module tests
+│   └── test_ui.py           # UI module tests
+│
 ├── requirements.txt         # Python dependencies
 ├── run.py                  # Application entry point
 └── README.md               # This file
@@ -43,6 +48,74 @@ Or from the src directory:
 ```bash
 python main.py
 ```
+
+## Running Tests
+
+Run all tests:
+```bash
+python -m unittest discover -s tests
+```
+
+Run specific test file:
+```bash
+python -m unittest tests.test_api
+```
+
+Run with verbose output:
+```bash
+python -m unittest discover -s tests -v
+```
+
+Run with coverage report:
+```bash
+pip install coverage
+coverage run -m unittest discover -s tests
+coverage report -m --include=src/
+```
+
+## Module Breakdown
+
+### `config.py`
+- Loads environment variables from `.env`
+- Defines API keys, categories, and settings
+- Provides configuration constants for other modules
+- **Responsibility**: Configuration management
+
+### `api.py`
+- `NewsScraper` class: Fetches articles from NewsAPI and NYT API
+- Handles web scraping with BeautifulSoup
+- Manages HTTP requests and error handling
+- **Responsibility**: External API communication & data fetching
+
+### `ui.py`
+- `NewsApp` class: Tkinter GUI components
+- Handles user interactions (search, display)
+- Manages article display and popup windows
+- **Responsibility**: User interface & presentation
+
+### `main.py`
+- Entry point for the application
+- Orchestrates initialisation of all components
+- Validates API keys before startup
+- **Responsibility**: Application orchestration
+
+## Testing Strategy
+
+Tests are organized by module using Python's standard `unittest` framework:
+
+- **test_api.py**: Tests for news fetching and scraping logic
+  - Mocks HTTP requests to test without real API calls
+  - Tests error handling and edge cases
+  
+- **test_config.py**: Tests for configuration module
+  - Validates configuration constants
+  - Tests settings and mappings
+  
+- **test_ui.py**: Tests for GUI components
+  - Tests widget initialisation
+  - Tests user interaction handling
+
+All external dependencies (API calls, network requests) are mocked using `unittest.mock` to ensure tests run offline and complete quickly.
 
 ## Contributing
 
