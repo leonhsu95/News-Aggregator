@@ -1,213 +1,126 @@
-"""GUI module for the News Aggregator application."""
-import tkinter as tk
-from tkinter import ttk, messagebox
+"""GUI module for the News Aggregator application using Streamlit."""
+import streamlit as st
 import webbrowser
 from .config import ALL_CATEGORIES
 from .visualizer import NewsVisualizer
 
-class NewsApp:
-    """Tkinter GUI for the News Aggregator."""
+
+def run_app(news_engine):
+    """
+    Run the News Aggregator Streamlit application.
     
-    def __init__(self, root, news_engine):
-        """
-        Initialize the GUI.
+    Args:
+        news_engine (NewsScraper): News scraper instance
+    """
+    # Page configuration
+    st.set_page_config(
+        page_title="News Aggregator",
+        page_icon="📰",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
+    
+    # Title
+    st.markdown("# 📰 News Aggregator")
+    st.markdown("Search and explore news articles by category")
+    
+    # Initialize session state
+    if "current_articles" not in st.session_state:
+        st.session_state.current_articles = []
+    if "selected_article" not in st.session_state:
+        st.session_state.selected_article = None
+    
+    # Sidebar for controls
+    with st.sidebar:
+        st.header("Search Controls")
         
-        Args:
-            root (tk.Tk): Root window
-            news_engine (NewsScraper): News scraper instance
-        """
-        self.root = root
-        self.news_engine = news_engine
-        self.current_article = []
-        
-        self._setup_window()
-        self._create_widgets()
-
-    def _setup_window(self):
-        """Configure the main window."""
-        self.root.title("News Scrapper")
-        self.root.geometry("800x600")
-
-    def _create_widgets(self):
-        """Create and layout GUI widgets."""
-        # Title label
-        tk.Label(
-            self.root,
-            text="Select the news category: ",
-            font=("Times New Roman", 14, "bold")
-        ).pack(pady=10)
-
         # Category dropdown
-        self.dropdown = ttk.Combobox(
-            self.root,
-            values=ALL_CATEGORIES,
-            state="readonly"
+        selected_category = st.selectbox(
+            "Select news category:",
+            ALL_CATEGORIES,
+            index=0
         )
-        self.dropdown.set("General")
-        self.dropdown.pack()
-
+        
         # Search button
-        tk.Button(
-            self.root,
-            text="Search News",
-            command=self.handle_search,
-            bg="blue",
-            fg="white",
-            font=("Times New Roman", 14, "bold")
-        ).pack(pady=10)
-
-        tk.Button(
-            self.root,
-            text="Show Visualization",
-            command=self.show_visualization,
-            bg="green",
-            fg="white",
-            font=("Times New Roman", 14, "bold")
-        ).pack(pady=5)
-
-        # Display frame with scrollbar
-        self.display_frame = tk.Frame(self.root)
-        self.display_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
+        if st.button("🔍 Search News", use_container_width=True):
+            with st.spinner("Loading articles..."):
+                results = news_engine.fetch_all_news(selected_category)
+                st.session_state.current_articles = results
         
-        self.scrollbar = tk.Scrollbar(self.display_frame)
-        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        
-        self.display = tk.Text(
-            self.display_frame,
-            wrap=tk.WORD,
-            padx=15,
-            pady=15,
-            font=("Times New Roman", 12),
-            yscrollcommand=self.scrollbar.set
-        )
-        self.display.pack(fill=tk.BOTH, expand=True)
-        self.scrollbar.config(command=self.display.yview)
-        
-        # Configure text tags
-        self.display.tag_config("bold_blue", foreground="blue", underline=True, font=("Times New Roman", 12, "bold"))
-        self.display.tag_config("source_tag", foreground="green", font=("Times New Roman", 10, "italic"))
-        self.display.tag_config("hint", foreground="purple", font=("Times New Roman", 10, "italic"))
-        
-        self.display.config(state="disabled")
-
-    def handle_search(self):
-        """Handle search button click event."""
-        selected_category = self.dropdown.get()
-        self.display.config(state="normal")
-        self.display.delete("1.0", tk.END)
-        self.display.insert(tk.END, "Loading...\n")
-        self.root.update()
-        
-        results = self.news_engine.fetch_all_news(selected_category)
-        self.current_article = results
-
-        self.display.delete("1.0", tk.END)
-        
-        if isinstance(results, str):
-            messagebox.showerror("Error", results)
-        elif not results:
-            self.display.insert(tk.END, "No articles found for this category. Try another category!")
+        # Visualization button
+        if st.button("📊 Show Visualization", use_container_width=True):
+            st.session_state.show_viz = True
         else:
-            self._display_articles(results)
-
-        self.display.config(state="disabled")
-
-    def _display_articles(self, articles):
-        """
-        Display articles in the text widget.
-        
-        Args:
-            articles (list): List of article dictionaries
-        """
-        for i, news in enumerate(articles):
-            tag_name = f"article_{i}"
-            self.display.insert(tk.END, f"Title: {news['title']}\n", tag_name)
-            self.display.tag_config(tag_name, foreground="blue", underline=True, font=("Times New Roman", 12, "bold"))
-            
-            self.display.insert(tk.END, f"Source: {news['source'].upper()}\n", "source_tag")
-
-            raw_summary = news.get('summary', 'No summary available!')
-            preview_para = str(raw_summary).split('\n\n')[0]
-            self.display.insert(tk.END, f"Overview: {preview_para}\n")
-            
-            self.display.insert(tk.END, "Double-click the title to read more...\n\n", "hint")
-            self.display.insert(tk.END, "="*50 + "\n\n")
-            
-            # Make title clickable
-            self.display.tag_bind(tag_name, "<Double-1>", lambda e, idx=i: self.show_full_article(idx))
-            self.display.tag_bind(tag_name, "<Enter>", lambda e: self.display.config(cursor="hand2"))
-            self.display.tag_bind(tag_name, "<Leave>", lambda e: self.display.config(cursor=""))
-
-    def show_full_article(self, index):
-        """
-        Display full article in a new window.
-        
-        Args:
-            index (int): Index of article in current_article list
-        """
-        article = self.current_article[index]
-        new_window = tk.Toplevel(self.root)
-        new_window.title(article['title'])
-        new_window.geometry("800x500")
-
-        # Header with title
-        tk.Label(
-            new_window,
-            text=article['title'],
-            font=("Times New Roman", 16, "bold"),
-            wraplength=600,
-            justify="left",
-            fg="#1227AF"
-        ).pack(pady=10, padx=20)
-
-        # Open in browser button
-        tk.Button(
-            new_window,
-            text="Open in Browser",
-            bg="orange",
-            fg="black",
-            font=("Times New Roman", 16, "bold"),
-            command=lambda: webbrowser.open(article['url'])
-        ).pack(pady=5)
-
-        # Scrollable text display
-        text = tk.Text(new_window, wrap=tk.WORD, padx=20, pady=25, font=("Times New Roman", 12))
-        text.pack(fill=tk.BOTH, expand=True)
-        
-        # Format content for display
-        raw_content = article.get('summary', '')
-        
-        if not raw_content or str(raw_content).strip().lower() in ["none", "", "No summary available!"]:
-            display_body = (
-                "Notice: Content extraction restricted.\n\n"
-                "The full content of this article is currently unavailable for direct preview.\n\n"
-                "Please click the 'Open in Browser' button to read the complete article."
-            )
+            st.session_state.show_viz = False
+    
+    # Main content area
+    col1, col2 = st.columns([3, 1])
+    
+    with col1:
+        # Display articles
+        if isinstance(st.session_state.current_articles, str):
+            st.error(st.session_state.current_articles)
+        elif not st.session_state.current_articles:
+            st.info("👈 Select a category and click 'Search News' to get started!")
         else:
-            display_body = raw_content
+            st.markdown(f"### Found {len(st.session_state.current_articles)} articles")
             
-        full_content = f"Source: {article['source']}\n"
-        full_content += f"URL: {article['url']}\n"
-        full_content += "-"*50 + "\n\n"
-        full_content += display_body
-        
-        text.insert("1.0", full_content)
-        text.config(state="disabled")
-
-
-
-    def show_visualization(self):
-            """Display data visualizations."""
+            # Display articles as expandable sections
+            for i, article in enumerate(st.session_state.current_articles):
+                with st.expander(f"📌 {article['title']}", expanded=(i == 0)):
+                    st.markdown(f"**Source:** `{article['source'].upper()}`")
+                    
+                    raw_summary = article.get('summary', 'No summary available!')
+                    preview_para = str(raw_summary).split('\n\n')[0]
+                    st.markdown(f"**Overview:** {preview_para}")
+                    
+                    # Display full summary if available
+                    if raw_summary and str(raw_summary).strip().lower() not in ["none", "", "No summary available!"]:
+                        st.markdown("**Full Summary:**")
+                        st.write(raw_summary)
+                    else:
+                        st.warning("Notice: Full content extraction restricted.")
+                    
+                    # Article metadata
+                    col_url, col_open = st.columns(2)
+                    with col_url:
+                        st.markdown(f"**URL:** {article['url']}")
+                    with col_open:
+                        if st.button("🌐 Open in Browser", key=f"btn_{i}"):
+                            webbrowser.open(article['url'])
     
-            if not self.current_article:
-                messagebox.showwarning(
-                    "No Data",
-                    "Please search for news articles first."
-                )
-                return
-    
-            visualizer = NewsVisualizer(self.current_article)
-    
-            visualizer.plot_articles_by_source()
-            visualizer.plot_summary_length_by_source()
-            visualizer.plot_top_words()
+    # Sidebar visualization
+    with col2:
+        if st.session_state.show_viz and st.session_state.current_articles:
+            st.subheader("📊 Analytics")
+            
+            # Display statistics
+            visualizer = NewsVisualizer(st.session_state.current_articles)
+            stats = visualizer.get_statistics()
+            
+            if stats:
+                col_stat1, col_stat2, col_stat3 = st.columns(3)
+                with col_stat1:
+                    st.metric("Total Articles", stats["Total Articles"])
+                with col_stat2:
+                    st.metric("Unique Sources", stats["Unique Sources"])
+                with col_stat3:
+                    st.metric("Avg Summary Length", f"{stats['Average Summary Length']} chars")
+            
+            # Visualization tabs
+            tab1, tab2, tab3 = st.tabs(["📈 By Source", "📊 Summary Length", "🔤 Top Words"])
+            
+            with tab1:
+                fig1 = visualizer.plot_articles_by_source()
+                if fig1:
+                    st.pyplot(fig1)
+            
+            with tab2:
+                fig2 = visualizer.plot_summary_length_by_source()
+                if fig2:
+                    st.pyplot(fig2)
+            
+            with tab3:
+                fig3 = visualizer.plot_top_words()
+                if fig3:
+                    st.pyplot(fig3)
