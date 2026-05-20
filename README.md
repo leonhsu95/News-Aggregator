@@ -158,7 +158,7 @@ Tests are organised by module using Python's standard `unittest` framework:
 
 ## Styles
 
-CSS are managed under the `src/styles` folder. Webassets is used to compile in a PostCSS-like web project compiler.
+CSS are managed under the `src/styles` folder to natively compile in a the project boilerplate.
 All new stylesheets can be added under this folder. To update and compile on runtime, run:
 
 `python build_css.py`
