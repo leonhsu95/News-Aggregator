@@ -29,7 +29,7 @@ def run_app(news_engine):
         "styles/analytics-panel.css"
     ]
     
-    compiled_css_path = "styles/compiled.css"
+    compiled_css_path = "src/styles/compiled.css"
     if os.path.exists(compiled_css_path):
         # Use pre-compiled CSS for better performance
         with open(compiled_css_path) as f:

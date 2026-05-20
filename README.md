@@ -14,14 +14,17 @@ news-aggregator/
 │   ├── config.py                # Configuration & API keys
 │   ├── api.py                   # News fetching & scraping logic
 │   │
-│   └── components/              # Reusable UI components
-│       ├── __init__.py          # Component exports
-│       ├── app.py               # Main app orchestrator
-│       ├── search_controls.py   # Search sidebar component
-│       ├── article_display.py   # Article rendering component
-│       ├── analytics_panel.py   # Analytics & visualisations panel
-│       ├── visualiser.py        # NewsVisualiser class
-│       └── visualiser_helper.py # Visualisation helper functions
+│   ├── components/              # Reusable UI components
+│   │   ├── __init__.py          # Component exports
+│   │   ├── app.py               # Main app orchestrator
+│   │   ├── search_controls.py   # Search sidebar component
+│   │   ├── article_display.py   # Article rendering component
+│   │   ├── analytics_panel.py   # Analytics & visualisations panel
+│   │   ├── visualiser.py        # NewsVisualiser class
+│   │   └── visualiser_helper.py # Visualisation helper functions
+│   │
+│   └── styles/                  # App styling files
+│       └── styles.css           # Main Streamlit custom CSS
 │
 ├── tests/
 │   ├── test_api.py              # API module tests
@@ -31,7 +34,7 @@ news-aggregator/
 ├── streamlit_app.py             # Streamlit app entry point
 ├── requirements.txt             # Python dependencies
 ├── run.py                       # Alternative run script
-└── README.md                    # This file
+└── README.md                    # Project documentation
 ```
 
 ## Installation
