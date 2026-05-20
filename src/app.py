@@ -3,6 +3,7 @@ import streamlit as st
 from .components.search_controls import render_search_controls
 from .components.article_display import render_articles
 from .components.analytics_panel import render_analytics_panel
+from .styles_loader import load_all_styles
 
 
 def run_app(news_engine):
@@ -16,13 +17,25 @@ def run_app(news_engine):
     st.set_page_config(
         page_title="News Aggregator",
         page_icon="📰",
-        layout="wide",
+        layout="centered",
         initial_sidebar_state="expanded"
     )
-    
-    # Title
-    st.markdown("# 📰 News Aggregator")
-    st.markdown("Search and explore news articles by category")
+
+    # Add stylesheets here
+    css_files = [
+        "styles/header.css",
+        "styles/article-display.css",
+        "styles/analytics-panel.css"
+    ]
+    combined_css = load_all_styles(css_files)
+    st.markdown(f"<style>{combined_css}</style>", unsafe_allow_html=True)
+
+    st.markdown("""
+        <div class="header-container">
+            <h1 class="header-title">📰 News Aggregator</h1>
+            <p class="header-subtitle">Search and explore news articles by category</p>
+        </div>
+    """, unsafe_allow_html=True)
     
     # Initialize session state
     if "current_articles" not in st.session_state:
