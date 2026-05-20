@@ -28,8 +28,7 @@ news-aggregator/
 │
 ├── tests/
 │   ├── test_api.py              # API module tests
-│   ├── test_config.py           # Config module tests
-│   └── test_ui.py               # UI module tests
+│   └── test_config.py           # Config module tests
 │
 ├── streamlit_app.py             # Streamlit app entry point
 ├── requirements.txt             # Python dependencies
