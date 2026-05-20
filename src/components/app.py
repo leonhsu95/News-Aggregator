@@ -42,7 +42,7 @@ def run_app(news_engine):
         # Display articles
         render_articles(st.session_state.current_articles)
     
-    # Sidebar visualization
+    # Sidebar visualisation
     with col2:
         # Display analytics panel
         render_analytics_panel(st.session_state.current_articles)

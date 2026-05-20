@@ -1,4 +1,4 @@
-"""Data visualization module for news articles."""
+"""Data visualisation module for news articles."""
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,12 +7,12 @@ from collections import Counter
 import re
 
 
-class NewsVisualizer:
-    """Creates visualizations for aggregated news articles."""
+class NewsVisualiser:
+    """Creates visualisations for aggregated news articles."""
 
     def __init__(self, articles):
         """
-        Initialise the visualizer with article data.
+        Initialise the visualiser with article data.
 
         Args:
             articles (list): List of article dictionaries.
@@ -24,7 +24,7 @@ class NewsVisualizer:
     def plot_articles_by_source(self):
         """Plot the number of articles from each source."""
         if self.df.empty or "source" not in self.df.columns:
-            st.warning("No source data available for visualization.")
+            st.warning("No source data available for visualisation.")
             return None
 
         source_counts = self.df["source"].value_counts()
@@ -42,7 +42,7 @@ class NewsVisualizer:
     def plot_summary_length_by_source(self):
         """Plot the average summary length for each source."""
         if self.df.empty or "summary" not in self.df.columns or "source" not in self.df.columns:
-            st.warning("No summary/source data available for visualization.")
+            st.warning("No summary/source data available for visualisation.")
             return None
 
         self.df["summary_length"] = self.df["summary"].astype(str).apply(len)
@@ -144,7 +144,7 @@ class NewsVisualizer:
             
             return fig
         except Exception as e:
-            st.warning(f"Could not generate timeline visualization: {e}")
+            st.warning(f"Could not generate timeline visualisation: {e}")
             return None
     
     def get_statistics(self):

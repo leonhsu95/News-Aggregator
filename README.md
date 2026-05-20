@@ -4,25 +4,34 @@ News Aggregator is a news GUI Python app that fetches articles from NewsAPI and 
 
 ## Project Structure
 
-The project follows a clean separation of concerns pattern:
+The project follows a clean separation of concerns pattern with modular UI components:
 
 ```
 news-aggregator/
 ├── src/
-│   ├── __init__.py          # Package marker
-│   ├── main.py              # Application entry point
-│   ├── config.py            # Configuration & API keys
-│   ├── api.py               # News fetching & scraping logic
-│   └── ui.py                # Tkinter GUI components
+│   ├── __init__.py              # Package exports
+│   ├── main.py                  # Application entry point
+│   ├── config.py                # Configuration & API keys
+│   ├── api.py                   # News fetching & scraping logic
+│   │
+│   └── components/              # Reusable UI components
+│       ├── __init__.py          # Component exports
+│       ├── app.py               # Main app orchestrator
+│       ├── search_controls.py   # Search sidebar component
+│       ├── article_display.py   # Article rendering component
+│       ├── analytics_panel.py   # Analytics & visualisations panel
+│       ├── visualiser.py        # NewsVisualiser class
+│       └── visualiser_helper.py # Visualisation helper functions
 │
 ├── tests/
-│   ├── test_api.py          # API module tests
-│   ├── test_config.py       # Config module tests
-│   └── test_ui.py           # UI module tests
+│   ├── test_api.py              # API module tests
+│   ├── test_config.py           # Config module tests
+│   └── test_ui.py               # UI module tests
 │
-├── requirements.txt         # Python dependencies
-├── run.py                  # Application entry point
-└── README.md               # This file
+├── streamlit_app.py             # Streamlit app entry point
+├── requirements.txt             # Python dependencies
+├── run.py                       # Alternative run script
+└── README.md                    # This file
 ```
 
 ## Installation
@@ -40,13 +49,14 @@ NYT_API_KEY=<your_nyt_api_key>
 
 ## Running the Application
 
+Run the Streamlit app:
 ```bash
-python -m src.main
+streamlit run streamlit_app.py
 ```
 
-Or from the src directory:
+Or run via the Python module:
 ```bash
-python main.py
+python -m src.main
 ```
 
 ## Running Tests
@@ -87,17 +97,48 @@ coverage report -m --include=src/
 - Manages HTTP requests and error handling
 - **Responsibility**: External API communication & data fetching
 
-### `ui.py`
-- `NewsApp` class: Tkinter GUI components
-- Handles user interactions (search, display)
-- Manages article display and popup windows
-- **Responsibility**: User interface & presentation
+### `components/` (UI Layer)
+
+#### `app.py`
+- `run_app()` function: Main Streamlit application orchestrator
+- Manages page configuration and session state
+- Coordinates all UI components
+- **Responsibility**: Application orchestration & layout
+
+#### `search_controls.py`
+- `render_search_controls()`: Sidebar search interface
+- Category selection dropdown
+- Search and visualisation toggle buttons
+- **Responsibility**: Search input & controls
+
+#### `article_display.py`
+- `render_articles()`: Article rendering component
+- Displays articles in expandable cards
+- Handles browser linking and summary display
+- **Responsibility**: Article presentation
+
+#### `analytics_panel.py`
+- `render_analytics_panel()`: Statistics and visualisation dashboard
+- Displays article metrics (total, sources, avg length)
+- Renders visualisation charts via tabs
+- **Responsibility**: Analytics presentation
+
+#### `visualiser.py`
+- `NewsVisualiser` class: Data visualisation engine
+- Methods: `plot_articles_by_source()`, `plot_summary_length_by_source()`, `plot_top_words()`
+- Generates matplotlib charts for article analytics
+- **Responsibility**: Data visualisation logic
+
+#### `visualiser_helper.py`
+- `plot_all_categories_trend()`: Multi-category trend visualisation
+- Creates Altair line charts for category trends
+- **Responsibility**: Advanced visualisation helpers
 
 ### `main.py`
 - Entry point for the application
-- Orchestrates initialisation of all components
-- Validates API keys before startup
-- **Responsibility**: Application orchestration
+- Initializes API keys and news scraper
+- Launches the Streamlit UI
+- **Responsibility**: Application bootstrap
 
 ## Testing Strategy
 
@@ -121,7 +162,15 @@ All external dependencies (API calls, network requests) are mocked using `unitte
 
 ## History
 
+Version 0.3 (2026-05-20) - Component-based UI refactoring
+- Migrated from monolithic UI to modular component architecture
+- Separated UI logic into individual components (search_controls, article_display, analytics_panel)
+- Moved visualiser classes into components folder for better organisation
+- Updated imports and package structure for cleaner module dependencies
+- Enhanced code maintainability and reusability
+
 Version 0.2 (2026-05-17) - Refactored to separation of concerns architecture
+
 Version 0.1 (2026-04-23) - Initial project setup
 
 ## Credits

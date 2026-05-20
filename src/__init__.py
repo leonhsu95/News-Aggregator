@@ -5,7 +5,7 @@ from .components import (
     render_search_controls,
     render_articles,
     render_analytics_panel,
-    NewsVisualizer,
+    NewsVisualiser,
     plot_all_categories_trend,
 )
 
@@ -14,6 +14,6 @@ __all__ = [
     "render_search_controls",
     "render_articles",
     "render_analytics_panel",
-    "NewsVisualizer",
+    "NewsVisualiser",
     "plot_all_categories_trend",
 ]

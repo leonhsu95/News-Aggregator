@@ -1,5 +1,5 @@
 """
-Example usage: Using the updated API module with visualization.
+Example usage: Using the updated API module with visualisation.
 
 This shows how to fetch articles and visualize them by category for the week.
 """
@@ -35,7 +35,7 @@ def display_weekly_analytics(scraper, category):
     df = export_stats_to_dataframe(weekly_stats)
     st.dataframe(df, use_container_width=True)
     
-    # Display visualizations
+    # Display visualisations
     col1, col2 = st.columns(2)
     
     with col1:

@@ -1,4 +1,4 @@
-"""Visualization helper functions for news article analytics using Streamlit."""
+"""Visualisation helper functions for news article analytics using Streamlit."""
 import streamlit as st
 import pandas as pd
 import altair as alt

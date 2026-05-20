@@ -30,8 +30,8 @@ def render_search_controls(news_engine):
                 results = news_engine.fetch_all_news(selected_category)
                 st.session_state.current_articles = results
         
-        # Visualization button
-        show_viz = st.button("📊 Show Visualization", use_container_width=True)
+        # Visualisation button
+        show_viz = st.button("📊 Show Visualisation", use_container_width=True)
         if show_viz:
             st.session_state.show_viz = True
         else:
