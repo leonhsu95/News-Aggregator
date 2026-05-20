@@ -2,7 +2,7 @@
 import streamlit as st
 from .config import NEWS_API_KEY, NYT_API_KEY, validate_keys
 from .api import NewsScraper
-from .ui import run_app
+from .components import run_app
 
 
 def main():
