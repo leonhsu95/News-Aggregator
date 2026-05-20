@@ -1,8 +1,8 @@
 """Main application orchestrator for the News Aggregator using Streamlit."""
 import streamlit as st
-from .search_controls import render_search_controls
-from .article_display import render_articles
-from .analytics_panel import render_analytics_panel
+from .components.search_controls import render_search_controls
+from .components.article_display import render_articles
+from .components.analytics_panel import render_analytics_panel
 
 
 def run_app(news_engine):

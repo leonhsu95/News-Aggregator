@@ -1,6 +1,6 @@
 """UI components for the News Aggregator application."""
 
-from .app import run_app
+from ..app import run_app
 from .search_controls import render_search_controls
 from .article_display import render_articles
 from .analytics_panel import render_analytics_panel
