@@ -1,4 +1,5 @@
 """Main application orchestrator for the News Aggregator using Streamlit."""
+import os
 import streamlit as st
 from .components.search_controls import render_search_controls
 from .components.article_display import render_articles
@@ -21,13 +22,22 @@ def run_app(news_engine):
         initial_sidebar_state="expanded"
     )
 
-    # Add stylesheets here
+    # Load stylesheets (use compiled CSS if available, otherwise load dynamically)
     css_files = [
-        "styles/header.css",
+        "styles/styles.css",
         "styles/article-display.css",
         "styles/analytics-panel.css"
     ]
-    combined_css = load_all_styles(css_files)
+    
+    compiled_css_path = "styles/compiled.css"
+    if os.path.exists(compiled_css_path):
+        # Use pre-compiled CSS for better performance
+        with open(compiled_css_path) as f:
+            combined_css = f.read()
+    else:
+        # Fallback to dynamic loading
+        combined_css = load_all_styles(css_files)
+    
     st.markdown(f"<style>{combined_css}</style>", unsafe_allow_html=True)
 
     st.markdown("""

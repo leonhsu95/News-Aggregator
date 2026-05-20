@@ -142,7 +142,7 @@ coverage report -m --include=src/
 
 ## Testing Strategy
 
-Tests are organized by module using Python's standard `unittest` framework:
+Tests are organised by module using Python's standard `unittest` framework:
 
 - **test_api.py**: Tests for news fetching and scraping logic
   - Mocks HTTP requests to test without real API calls
@@ -156,11 +156,22 @@ Tests are organized by module using Python's standard `unittest` framework:
   - Tests widget initialisation
   - Tests user interaction handling
 
+## Styles
+
+CSS are managed under the `src/styles` folder. Webassets is used to compile in a PostCSS-like web project compiler.
+All new stylesheets can be added under this folder. To update and compile on runtime, run:
+
+`python build_css.py`
+
 All external dependencies (API calls, network requests) are mocked using `unittest.mock` to ensure tests run offline and complete quickly.
 
 ## Contributing
 
 ## History
+
+Version 0.4 (2026-05-20) - CSS compilation
+- Separated global styles on app to individual and global stylesheets
+- Dynamic style updates on runtime
 
 Version 0.3 (2026-05-20) - Component-based UI refactoring
 - Migrated from monolithic UI to modular component architecture
